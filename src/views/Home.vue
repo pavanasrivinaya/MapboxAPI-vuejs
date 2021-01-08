@@ -52,6 +52,7 @@ export default {
       center: [80.18536880746353, 16.501575031841256],
       zoom: 13
     });
+
     map.on("mousemove", function(e) {
       document.getElementById("info").innerHTML =
         // e.point is the x, y coordinates of the mousemove event relative
@@ -61,20 +62,26 @@ export default {
         // e.lngLat is the longitude, latitude geographical position of the event
         JSON.stringify(e.lngLat.wrap());
     });
+
     // Add zoom and rotation controls to the map.
     // eslint-disable-next-line no-undef
     map.addControl(new mapboxgl.NavigationControl());
     // eslint-disable-next-line no-undef
     map.addControl(new mapboxgl.FullscreenControl());
-    map.addControl(
-      // eslint-disable-next-line no-undef
-      new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true
-        },
-        trackUserLocation: true
-      })
-    );
+
+    // Initialize the geolocate control.
+    // eslint-disable-next-line no-undef
+    var geolocate = new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true
+    });
+    // Add the control to the map.
+    map.addControl(geolocate);
+    map.on("load", function() {
+      geolocate.trigger();
+    });
     // eslint-disable-next-line no-undef
     var marker = new mapboxgl.Marker({
       draggable: true
