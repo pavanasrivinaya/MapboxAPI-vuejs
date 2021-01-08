@@ -4,8 +4,8 @@
 
     <h1>{{ message }}</h1>
     <div id="map"></div>
+    <pre id="info"></pre>
     <div id="geocoder" class="geocoder"></div>
-
     <pre id="coordinates" class="coordinates"></pre>
     <div id="menu">
       <input
@@ -51,6 +51,15 @@ export default {
       style: "mapbox://styles/mapbox/streets-v11",
       center: [80.18536880746353, 16.501575031841256],
       zoom: 13
+    });
+    map.on("mousemove", function(e) {
+      document.getElementById("info").innerHTML =
+        // e.point is the x, y coordinates of the mousemove event relative
+        // to the top-left corner of the map
+        "<p>Geographical information</p>" +
+        // "<br />" +
+        // e.lngLat is the longitude, latitude geographical position of the event
+        JSON.stringify(e.lngLat.wrap());
     });
     // Add zoom and rotation controls to the map.
     // eslint-disable-next-line no-undef
@@ -116,6 +125,8 @@ export default {
   background: #fff;
   padding: 10px;
   font-family: "Open Sans", sans-serif;
+  margin-top: -54px;
+  margin-left: 8px;
 }
 body {
   margin: 0;
@@ -152,5 +163,19 @@ body {
 }
 .mapboxgl-ctrl-geocoder {
   min-width: 100%;
+}
+#info {
+  display: block;
+  position: relative;
+  margin: 0px auto;
+  width: 50%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: center;
+  color: #222;
+  background: #fff;
+  margin-right: 20px;
 }
 </style>
